@@ -1,4 +1,4 @@
-# Kavita – Variante Cartelle
+# Kavita-rooms (Variante Cartelle)
 
 Fork personale di [Kavita](https://github.com/Kareadita/Kavita) (GPL-3.0) con tre modifiche:
 
@@ -11,12 +11,12 @@ Fork personale di [Kavita](https://github.com/Kareadita/Kavita) (GPL-3.0) con tr
 ## Immagine Docker
 
 Viene compilata automaticamente da GitHub Actions a ogni push sul ramo `cartelle`:
-`ghcr.io/pcallioni/kavita-cartelle:latest`
+`ghcr.io/pcallioni/kavita-rooms:latest`
 
 ```yaml
 services:
   kavita:
-    image: ghcr.io/pcallioni/kavita-cartelle:latest
+    image: ghcr.io/pcallioni/kavita-rooms:latest
     container_name: kavita
     restart: unless-stopped
     environment:

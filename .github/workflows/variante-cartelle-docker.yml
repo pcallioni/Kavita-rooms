@@ -1,5 +1,5 @@
 # Variante Cartelle: compila Kavita (interfaccia + server) e pubblica l'immagine Docker
-# su ghcr.io/<utente>/kavita-cartelle a ogni push sul ramo "cartelle".
+# su ghcr.io/<utente>/kavita-rooms a ogni push sul ramo "cartelle".
 name: Variante Cartelle - immagine Docker
 
 on:
@@ -60,7 +60,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Nome immagine in minuscolo
-        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/kavita-cartelle" >> "$GITHUB_ENV"
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/kavita-rooms" >> "$GITHUB_ENV"
 
       - name: Build e push
         uses: docker/build-push-action@v6
