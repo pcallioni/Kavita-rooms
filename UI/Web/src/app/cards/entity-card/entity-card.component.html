@@ -133,9 +133,12 @@
           @if (hasTitleTemplate()) {
             <ng-container *ngTemplateOutlet="titleTemplate()!; context: { $implicit: entity() }" />
           } @else {
-            {{ title() }}
+            {{ titleParts().name }}
           }
         </a>
+        @if (!hasTitleTemplate() && titleParts().folder) {
+          <span class="card-folder">[{{ titleParts().folder }}]</span>
+        }
       </span>
 
       <!-- Action Menu -->

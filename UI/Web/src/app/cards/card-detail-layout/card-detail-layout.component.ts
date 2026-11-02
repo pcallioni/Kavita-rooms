@@ -101,7 +101,7 @@ export class CardDetailLayoutComponent<TFilter extends number, TSort extends num
    */
   customSort = input(false);
   jumpBarKeys = input<Array<JumpKey>>([]); // This is approx 784 pixels tall, original keys
-  gridColumnsTemplate = input('repeat(auto-fill, 10rem)');
+  gridColumnsTemplate = input('repeat(auto-fill, var(--card-image-width))');
 
   itemClicked = output<any>();
   applyFilter = output<FilterEvent>();

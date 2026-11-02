@@ -1,0 +1,45 @@
+<div class="main-container container-fluid">
+  <app-side-nav-companion-bar>
+    <h4 title>
+      <a [routerLink]="['/library', libraryId]" class="text-reset">{{ library()?.name }}</a>
+    </h4>
+    <h5 subtitle>
+      <nav class="folder-crumbs" aria-label="Cartelle">
+        <a [routerLink]="[]" [queryParams]="{path: null}"><i class="fa-solid fa-folder-tree" aria-hidden="true"></i> Cartelle</a>
+        @for (crumb of crumbs(); track crumb.path) {
+          <span class="sep">/</span>
+          <a [routerLink]="[]" [queryParams]="{path: crumb.path}">{{ crumb.name }}</a>
+        }
+      </nav>
+    </h5>
+  </app-side-nav-companion-bar>
+
+  <app-loading [loading]="loading()" />
+
+  @if (!loading()) {
+    @if (folders().length > 0) {
+      <div class="folder-grid">
+        @for (folder of folders(); track folder.path) {
+          <a class="folder-tile" [routerLink]="[]" [queryParams]="{path: folder.path}" [title]="folder.name">
+            <i class="fa-solid fa-folder" aria-hidden="true"></i>
+            <span class="folder-name">{{ folder.name }}</span>
+            <span class="folder-count">{{ folder.count }}</span>
+          </a>
+        }
+      </div>
+    }
+
+    @if (seriesHere().length > 0) {
+      <div class="book-grid">
+        @for (series of seriesHere(); track series.id; let i = $index) {
+          <app-series-card [series]="series" [suppressLibraryLink]="true" [index]="i" [maxIndex]="seriesHere().length"
+                           (reload)="loadSeries()" />
+        }
+      </div>
+    }
+
+    @if (folders().length === 0 && seriesHere().length === 0) {
+      <p class="text-muted mt-3">Nessun libro in questa cartella.</p>
+    }
+  }
+</div>

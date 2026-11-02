@@ -1,5 +1,5 @@
-$image-height: 14.5569rem;
-$image-width: 10rem;
+$image-height: 9.4375rem;
+$image-width: 6.5rem;
 
 .card-item-container {
   width: $image-width;
@@ -50,7 +50,7 @@ $image-width: 10rem;
   pointer-events: none;
   position: absolute;
   top: 0;
-  width: 10rem;
+  width: $image-width;
 }
 
 .not-read-badge {
@@ -117,7 +117,7 @@ $image-width: 10rem;
       top: 0;
       left: 0;
       width: 100%;
-      height: 14.5569rem;
+      height: $image-height;
       transition: all 0.2s;
       border-top-left-radius: 0.25rem;
       border-top-right-radius: 0.25rem;

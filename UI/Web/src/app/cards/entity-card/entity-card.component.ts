@@ -124,6 +124,13 @@ export class EntityCardComponent<T> implements OnInit {
     this.config().titleFunc(this.data())
   );
 
+  /** Variante Cartelle: splits "Poesie [Kafka]" into the title and the folder, shown on its own line */
+  protected readonly titleParts: Signal<{name: string, folder: string | null}> = computed(() => {
+    const full = this.title() ?? '';
+    const match = /^(.*\S)\s\[([^\]]+)\]$/.exec(full);
+    return match ? {name: match[1], folder: match[2]} : {name: full, folder: null};
+  });
+
   /** Router link for title */
   protected readonly titleRoute: Signal<string> = computed(() =>
     this.config().titleRouteFunc(this.data())

@@ -594,6 +594,9 @@ public partial class ParseScannedFiles
     {
         if (info.Series == string.Empty) return ParseIssues.FromFailedParse(info);
 
+        // Variante Cartelle: every book is bound to the folder it lives in, so files from different folders never merge
+        BindSeriesToFolder(info);
+
         var normalizedSeries = info.Series.ToNormalized();
 
         // Do not ingest series with no meaningful information as title. These break merging as they'll all merge into each other
@@ -638,6 +641,42 @@ public partial class ParseScannedFiles
         });
 
         return null;
+    }
+
+    /// <summary>
+    /// Variante Cartelle: appends the name of the folder that holds the file, e.g. "Poesie" in .../Kafka/ becomes "Poesie [Kafka]".
+    /// Placeholders carry the name already stored in the database, which is bound already
+    /// </summary>
+    public static void BindSeriesToFolder(ParserInfo info)
+    {
+        if (info.IsPlaceholder || string.IsNullOrEmpty(info.FullFilePath)) return;
+
+        var folder = FolderLabel(info.FullFilePath);
+        if (string.IsNullOrEmpty(folder)) return;
+
+        info.Series = WithFolder(info.Series, folder);
+        if (!string.IsNullOrEmpty(info.LocalizedSeries))
+        {
+            info.LocalizedSeries = WithFolder(info.LocalizedSeries, folder);
+        }
+    }
+
+    /// <returns>The name of the folder that directly contains the file</returns>
+    public static string FolderLabel(string filePath)
+    {
+        var normalized = Parser.NormalizePath(filePath).TrimEnd('/');
+        var lastSlash = normalized.LastIndexOf('/');
+        if (lastSlash <= 0) return string.Empty;
+
+        var folder = normalized[..lastSlash];
+        var folderSlash = folder.LastIndexOf('/');
+        return folderSlash < 0 ? folder : folder[(folderSlash + 1)..];
+    }
+
+    public static string WithFolder(string name, string folder)
+    {
+        var suffix = $" [{folder}]";
+        return name.EndsWith(suffix, StringComparison.Ordinal) ? name : name + suffix;
     }
 
     /// <summary>

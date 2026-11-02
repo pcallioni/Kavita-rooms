@@ -96,6 +96,12 @@ export const routes: Routes = [
             loadChildren: () => import('./_routes/library-detail-routing.module').then(m => m.routes)
           },
           {
+            // Variante Cartelle: browse the library by folder
+            path: 'cartelle',
+            pathMatch: 'full',
+            loadComponent: () => import('./folder-browser/folder-browser.component').then(c => c.FolderBrowserComponent)
+          },
+          {
             path: 'series/:seriesId',
             pathMatch: 'full',
             data: {titleField: 'series', titleProp: 'name', titleSuffix: ' Details'},

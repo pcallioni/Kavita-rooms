@@ -401,14 +401,14 @@
   --card-progress-bar-color: var(--primary-color);
   --card-overlay-bg-color: rgba(0, 0, 0, 0);
   --card-overlay-hover-bg-color: rgba(30,30,30,.6);
-  --card-progress-triangle-size: 1.75rem;
+  --card-progress-triangle-size: 1.125rem;
   --card-body-bg-color: rgba(0,0,0,0.7);
   --card-title-text-color: var(--card-text-color);
   --card-overlay-text-color: var(--card-text-color);
   --card-hover-text-color: var(--card-text-color);
   --card-hover-bg-color: #3a3a3a;
-  --card-image-height: 14.5625rem;
-  --card-image-width: 10rem;
+  --card-image-height: 9.4375rem; /* Variante Cartelle: copertine piccole */
+  --card-image-width: 6.5rem;
   --card-progress-height: 0.3125rem;
 
   /* Slider */

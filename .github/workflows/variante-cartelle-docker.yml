@@ -1,0 +1,73 @@
+# Variante Cartelle: compila Kavita (interfaccia + server) e pubblica l'immagine Docker
+# su ghcr.io/<utente>/kavita-cartelle a ogni push sul ramo "cartelle".
+name: Variante Cartelle - immagine Docker
+
+on:
+  push:
+    branches: ["cartelle"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Interfaccia (Angular)
+        working-directory: UI/Web
+        run: |
+          npm ci --legacy-peer-deps --no-audit --no-fund
+          npm run prod
+          mkdir -p ../../Kavita.Server/wwwroot
+          cp -r dist/browser/* ../../Kavita.Server/wwwroot/
+
+      - name: .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Server (.NET)
+        run: |
+          dotnet publish Kavita.Server/Kavita.Server.csproj -c Release -r linux-x64 --self-contained true -o publish/Kavita
+          cd publish/Kavita
+          mv Kavita.Server Kavita
+          mkdir -p config
+          cp ../../Kavita.Server/config/appsettings.json config/appsettings-init.json
+          cp ../../LICENSE LICENSE.txt
+          rm -rf BuildHost-net472 BuildHost-netcore bin config/cache-long
+          cd ../..
+          mkdir -p _output
+          tar czf _output/kavita-linux-x64.tar.gz -C publish Kavita
+
+      - name: Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Nome immagine in minuscolo
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/kavita-cartelle" >> "$GITHUB_ENV"
+
+      - name: Build e push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}

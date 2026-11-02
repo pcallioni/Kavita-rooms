@@ -143,14 +143,21 @@
     min-width: 0;
     max-width: none;
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.72rem;
+    padding: 0.375rem 0.125rem;
     text-align: center;
 
-    a {
+    a, .card-folder {
       display: block;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    // Variante Cartelle: the folder of the book, always visible under the title
+    .card-folder {
+      font-size: 0.65rem;
+      opacity: 0.75;
     }
   }
 }
