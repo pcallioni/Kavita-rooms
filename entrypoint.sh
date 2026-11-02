@@ -23,6 +23,13 @@ else
     echo "jemalloc not found, using default allocator. This may cause increased memory usage"
 fi
 
+# Kavita-rooms: on first run the mounted config folder is empty, so seed the default settings
+if [ ! -f /kavita/config/appsettings.json ] && [ -f /tmp/config/appsettings.json ]; then
+    mkdir -p /kavita/config
+    cp /tmp/config/appsettings.json /kavita/config/appsettings.json
+    echo "Created /kavita/config/appsettings.json"
+fi
+
 echo "Starting Kavita"
 echo ls -l "/kavita/config/appsettings.json"
 
