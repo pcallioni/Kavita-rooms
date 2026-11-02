@@ -30,18 +30,18 @@ export class KavitaTitleStrategy extends TitleStrategy {
     }
 
     // 3. Fallback
-    this.title.setTitle('Kavita');
+    this.title.setTitle('Kavita-rooms');
   }
 
   setFormattedTitle(pageTitle: string): void {
     if (pageTitle.startsWith('title.')) {
       pageTitle = this.translocoService.translate(pageTitle);
     }
-    this.title.setTitle(`${pageTitle} (Kavita)`);
+    this.title.setTitle(`${pageTitle} (Kavita-rooms)`);
   }
 
   setTranslatedTitle(key: string, params: Record<string, unknown>): void {
-    this.title.setTitle(`${this.translocoService.translate(key, params)} (Kavita)`);
+    this.title.setTitle(`${this.translocoService.translate(key, params)} (Kavita-rooms)`);
   }
 
   private getDeepestRoute(route: RouterStateSnapshot['root']): RouterStateSnapshot['root'] {
